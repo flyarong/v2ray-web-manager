@@ -73,13 +73,13 @@ public class ProxyController {
          Date date = new Date();
          Stat stat = statRepository.findByAccountIdAndFromDateBeforeAndToDateAfter(accountId, date, date);
          if (stat ==null) {
-              stat = statService.createStat(account);
+              stat = statService.createOrGetStat(account);
               if (stat ==null) return Result.builder().code(500).message("获取不到stat,原因:未生成stat，已经过期").build();
 
          }
          //check flow
         if ((account.getBandwidth() * G) < stat.getFlow()) {
-            log.warn("账号流量已经超强限制：{}" ,account.getAccountNo());
+            log.warn("账号流量已经超过限制：{}" ,account.getAccountNo());
             return Result.builder().code(500).message("流量已经超过限制").build();
         }
 
@@ -88,7 +88,11 @@ public class ProxyController {
         //新版应该根据域名查找服务器
 
         Server server=  serverService.findByDomain(domain,account.getLevel());
-        //Integer serverId = account.getServerId();
+    //https://github.com/master-coder-ll/v2ray-web-manager/issues/96
+    if (account.getLevel()<server.getLevel())  {
+        log.warn("账号等级不够：{}" ,account.getAccountNo());
+        return Result.builder().code(500).message("账号等级不够").build();
+    }
 
         User user = userRepository.findById(userId).orElse(null);
         if (user ==null) throw  new NullPointerException("user is null");

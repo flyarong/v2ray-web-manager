@@ -14,7 +14,7 @@
   ## 特征：
   * 流量控制(qos)-无敌的速率、流量、连接数控制 ，一切都可以灵活定制
   * 账号管理
-  * 流量管理-到期自动、流量超标断开连接
+  * 流量管理-到期自动断开、流量超标自动断开
   * 服务器管理 
   * 公告管理
   * 分权限
@@ -64,6 +64,8 @@
     
   [高级-模式](https://github.com/master-coder-ll/v2ray-web-manager/blob/master/step-by-step-model.md)
   
+  [高级-实践集群模式](https://github.com/master-coder-ll/v2ray-web-manager/blob/master/cluster.md)
+
   ##### 其他版本
   
   [从docker中开始](https://github.com/master-coder-ll/v2ray-web-manager/blob/master/step-by-step-docker.md)
@@ -103,7 +105,7 @@
 > 根据配置文件重置密码或者创建新账号。
 ```bash
 # x.y.z 为版本号，版本大于3.1.4提供支持
-java -jar admin-x.y.z.jar restpwd
+java -jar admin-x.y.z.jar --spring.config.location=/opt/jar/admin.yaml restpwd
 ```
     
 
@@ -119,9 +121,6 @@ java -jar admin-x.y.z.jar restpwd
    1. 使用其他jre 如：[openj9-eclipse](https://www.eclipse.org/openj9/),
    减低内存占用明显，并且不影响性能。
 
-   2. `激进` ~~java:JIT特性是提高java性能的重要编译器，其动态编译优化性能更甚于c++等一些静态编译语言。但是也是内存占有用的大户。
-               如果你需要减少内存占用，在运行java 命令上加 `-Djava.compiler=NONE` ，会大幅减少java内存占用(约30~50%)，同时降低性能,大幅度增加启动时间。
-               出现一些动态代理的问题不要用。~~
         
       
         
